@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "outDir": "build",
+    "removeComments": true,
+    "sourceMap": false,
+    "noUnusedLocals":false
+  },
+  "include": [
+    "src/server/index.ts",
+    "src/parse-server/*"
+  ]
+}

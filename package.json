@@ -7,6 +7,7 @@
   },
   "dependencies": {
     "@types/lodash": "^4.14.119",
+    "aws-sdk": "^2.395.0",
     "chalk": "^2.4.1",
     "cors": "^2.8.5",
     "dotenv": "*",
@@ -41,6 +42,7 @@
     "typescript": "*"
   },
   "scripts": {
+    "start": "node build/src/server/index.js",
     "clean": "rimraf coverage build tmp",
     "build": "tsc -p tsconfig.release.json",
     "build:watch": "tsc -w -p tsconfig.release.json",

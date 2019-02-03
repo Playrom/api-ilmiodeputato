@@ -1,0 +1,12 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express = require("express");
+const collegi_1 = require("./collegi");
+const risultati_1 = require("./risultati");
+const deputati_1 = require("./deputati");
+const leggi_1 = require("./leggi");
+exports.apiController = express.Router();
+exports.apiController.use('/risultati', risultati_1.risultati);
+exports.apiController.use('/collegi', collegi_1.collegi);
+exports.apiController.use('/deputati', deputati_1.deputati);
+exports.apiController.use('/leggi', leggi_1.leggi);

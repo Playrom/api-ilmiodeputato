@@ -20,6 +20,18 @@ function getTuttePersone() {
   }`;
 }
 exports.getTuttePersone = getTuttePersone;
+function getTuttiAccount() {
+    return `prefix dcterms: <http://purl.org/dc/terms/>
+  SELECT DISTINCT ?persona ?account ?nome ?tipo ?link
+  WHERE {
+    ?persona a foaf:Person.
+    ?persona foaf:account ?account.
+    OPTIONAL{ ?account foaf:accountName ?nome.
+              ?account rdf:type ?tipo.
+              ?account foaf:accountServiceHomepage ?link. }
+  }`;
+}
+exports.getTuttiAccount = getTuttiAccount;
 function getTuttiDeputati() {
     return `prefix dcterms: <http://purl.org/dc/terms/>
 

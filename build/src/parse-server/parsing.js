@@ -20,6 +20,7 @@ function main() {
         });
         yield db.connect();
         yield db.query(`
+    DELETE FROM "public"."account_persona";
     DELETE FROM "public"."incarichi_gruppo_deputato";
     DELETE FROM "public"."uffici_parlamentari_deputato";
     DELETE FROM "public"."componente_deputato";

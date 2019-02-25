@@ -69,6 +69,47 @@ function parseDeputati() {
                     }
                 }
             }
+            const accountsData = yield dataCamera_1.getFromRemote(queryCamera_1.getTuttiAccount());
+            const accounts = utils_1.extractBindings(accountsData);
+            for (const value of accounts) {
+                const personaUrl = value.persona;
+                const personaId = personaUrl.replace('http://dati.camera.it/ocd/persona.rdf/', '');
+                const accountUrl = value.account;
+                const id = accountUrl.replace('http://dati.camera.it/ocd/account.rdf/300231_fb/', '');
+                const nome = value.nome;
+                const tipo = value.tipo;
+                const link = value.link;
+                const account = {
+                    id,
+                    personaId,
+                    nome,
+                    tipo,
+                    link
+                };
+                try {
+                    const queryAccount = `INSERT INTO "public"."account_persona" (
+                "id",
+                "persona_id",
+                "nome",
+                "tipo",
+                "link")
+                VALUES ($1,$2,$3,$4,$5)
+                ON CONFLICT (id) DO NOTHING
+                `;
+                    const queryAccountData = [
+                        account.id,
+                        account.personaId,
+                        account.nome,
+                        account.tipo,
+                        account.link
+                    ];
+                    yield db.query(queryAccount, queryAccountData);
+                }
+                catch (e) {
+                    console.log(e);
+                    return;
+                }
+            }
             const data = yield dataCamera_1.getFromRemote(queryCamera_1.getTuttiDeputati());
             const deputati = utils_1.extractBindings(data);
             for (const value of deputati) {

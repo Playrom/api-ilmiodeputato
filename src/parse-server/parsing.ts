@@ -18,6 +18,7 @@ async function main () {
 
   await db.connect()
   await db.query(`
+    DELETE FROM "public"."account_persona";
     DELETE FROM "public"."incarichi_gruppo_deputato";
     DELETE FROM "public"."uffici_parlamentari_deputato";
     DELETE FROM "public"."componente_deputato";

@@ -17,6 +17,18 @@ export function getTuttePersone () {
     OPTIONAL{?persona <http://lod.xdams.org/ontologies/ods/modified> ?aggiornamento.}
   }`
 }
+
+export function getTuttiAccount () {
+  return `prefix dcterms: <http://purl.org/dc/terms/>
+  SELECT DISTINCT ?persona ?account ?nome ?tipo ?link
+  WHERE {
+    ?persona a foaf:Person.
+    ?persona foaf:account ?account.
+    OPTIONAL{ ?account foaf:accountName ?nome.
+              ?account rdf:type ?tipo.
+              ?account foaf:accountServiceHomepage ?link. }
+  }`
+}
 export function getTuttiDeputati () {
   return `prefix dcterms: <http://purl.org/dc/terms/>
 

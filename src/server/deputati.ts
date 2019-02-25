@@ -101,6 +101,16 @@ router.get('/:id', async (req: express.Request, res: express.Response) => {
         deputato.commissioni = result.rows
       }
 
+      result = await db.query(`
+            SELECT ad.*
+            FROM account_persona ad
+            WHERE ad.persona_id = $1;
+      `, [deputato.persona_id])
+
+      if (result.rowCount > 0) {
+        deputato.socials = result.rows
+      }
+
       let resultCollegio
 
       if (deputato.collegio_plurinominale.toLowerCase().includes('america') ||

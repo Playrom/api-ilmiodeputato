@@ -88,6 +88,14 @@ router.get('/:id', (req, res) => tslib_1.__awaiter(this, void 0, void 0, functio
             if (result.rowCount > 0) {
                 deputato.commissioni = result.rows;
             }
+            result = yield db_1.db.query(`
+            SELECT ad.*
+            FROM account_persona ad
+            WHERE ad.persona_id = $1;
+      `, [deputato.persona_id]);
+            if (result.rowCount > 0) {
+                deputato.socials = result.rows;
+            }
             let resultCollegio;
             if (deputato.collegio_plurinominale.toLowerCase().includes('america') ||
                 deputato.collegio_plurinominale.toLowerCase().includes('africa') ||

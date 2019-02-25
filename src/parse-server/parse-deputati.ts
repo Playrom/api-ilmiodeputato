@@ -1,7 +1,7 @@
 import { Client } from 'pg'
 
 import { getFromRemote }  from './dataCamera'
-import { getTuttiDeputati, getTuttePersone } from './queryCamera'
+import { getTuttiDeputati, getTuttePersone, getTuttiAccount } from './queryCamera'
 import { parseDate, extractBindings, CameraJSON} from './utils'
 
 export async function parseDeputati () {
@@ -71,6 +71,55 @@ export async function parseDeputati () {
 
                     return
                 }
+            }
+        }
+
+        const accountsData = await getFromRemote(getTuttiAccount()) as CameraJSON
+        const accounts = extractBindings(accountsData)
+
+        // tslint:disable-next-line: max-func-body-length
+        for (const value of accounts) {
+            const personaUrl: string = value.persona
+            const personaId: string = personaUrl.replace('http://dati.camera.it/ocd/persona.rdf/','')
+
+            const accountUrl: string = value.account
+            const id: string = accountUrl.replace('http://dati.camera.it/ocd/account.rdf/300231_fb/','')
+
+            const nome: string = value.nome
+            const tipo: string = value.tipo
+            const link: string = value.link
+
+            const account = {
+                id,
+                personaId,
+                nome,
+                tipo,
+                link
+            }
+
+            try {
+                const queryAccount = `INSERT INTO "public"."account_persona" (
+                "id",
+                "persona_id",
+                "nome",
+                "tipo",
+                "link")
+                VALUES ($1,$2,$3,$4,$5)
+                ON CONFLICT (id) DO NOTHING
+                `
+
+                const queryAccountData = [
+                    account.id,
+                    account.personaId,
+                    account.nome,
+                    account.tipo,
+                    account.link
+                ]
+
+                await db.query(queryAccount, queryAccountData)
+            } catch (e) {
+                console.log(e)
+                return
             }
         }
 
